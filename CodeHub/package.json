@@ -1,6 +1,7 @@
 {
-  "name": "johns-hot-or-not-app",
-  "version": "0.1.0",
+  "name": "codehub",
+  "version": "1.0.0",
+  "description": "Real-time screen analysis and AI-powered coding guidance",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,11 +10,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "html2canvas": "^1.4.1",
     "lucide-react": "^0.542.0",
     "next": "15.4.1",
-    "ollama": "^0.5.16",
+    "ollama": "^0.5.17",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "tesseract.js": "^6.0.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
