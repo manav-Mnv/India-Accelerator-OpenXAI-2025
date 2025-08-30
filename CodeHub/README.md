@@ -1,166 +1,189 @@
-# CodeHub
-<hr>
-<hr>
+# CodeHub  
+<hr>  
+<hr>  
 
-A fun Next.js app that uses Ollama with LLaVA to analyze images and tell you if they're HOT or NOT! Built to be deployable both locally and on NixOS infrastructure.
+A fun Next.js app that uses Ollama local models to provide real-time code analysis, intelligent chat assistance, and screen/image insights. Deployable locally—with ngrok for HTTPS—or on any NixOS infrastructure.
 
 ## Features
 
-- 🖼️ Upload any image file (PNG, JPG, GIF)
-- 🤖 AI-powered analysis using LLaVA model
-- 🔥 Instant HOT or NOT verdict with descriptions
-- 📱 Beautiful red-themed UI
-- ⚡ Real-time image preview
-- 🚀 Deployable with Nix for production
+- 🖥️ Real-time Screen Analysis (HTTPS required)  
+- 🤖 AI Chat Assistant for coding questions  
+- 🖼️ Image Analysis: OCR + AI insights  
+- 📊 Interactive Dashboard with activity metrics (mock data)  
+- 🔗 Project Sharing UI demo (database required for persistence)  
+- 📚 History System via browser storage  
+- 🌙 Dark/Light Mode with persistence  
+- 📱 Responsive Design  
+- 🔒 100% Local AI Processing (no cloud)  
+- ⚡ OCR Integration with Tesseract.js  
 
 ## Prerequisites
 
-- Node.js 18+ installed
-- Ollama installed and running locally
-- LLaVA model downloaded in Ollama
+- Node.js 18+  
+- Ollama installed and running (`ollama serve`)  
+- Models pulled: `codellama:7b`, `llama3.2:3b`  
+- ngrok installed for screen capture HTTPS (optional)  
 
 ## Quick Start (Development)
 
-### Option 1: Traditional npm development
-
-1. **Install dependencies:**
+1. **Install dependencies**  
    ```bash
-   npm install
+   npm install --legacy-peer-deps
    ```
-
-2. **Install LLaVA model in Ollama:**
+2. **Pull AI models**  
    ```bash
-   ollama pull llava:latest
+   ollama pull codellama:7b
+   ollama pull llama3.2:3b
    ```
-
-3. **Start the development server:**
+3. **Start Ollama server**  
+   ```bash
+   ollama serve
+   ```
+4. **Start Next.js server**  
    ```bash
    npm run dev
    ```
+5. **Open browser** at `http://localhost:3000`  
 
-4. **Open your browser:**
-   Navigate to [http://localhost:3000](http://localhost:3000)
+## HTTPS Setup for Screen Capture
 
-### Option 2: Nix development
+Screen capture features require HTTPS. Use ngrok:
 
-1. **From the app directory, run:**
-   ```bash
-   nix run
-   ```
+```bash
+npm install -g ngrok
+npm run dev
+ngrok http 3000
+```
 
-This will automatically:
-- Start Ollama server
-- Pull the LLaVA model
-- Build and run the Next.js app
+Copy the HTTPS URL from ngrok and use it to access screen analysis.
 
 ## How to Use
 
-1. Click the upload area to select an image
-2. Preview your image
-3. Click "🔥 Analyze Image 🔥" 
-4. Get your HOT or NOT verdict with a description!
-
-## API Endpoint
-
-The app uses `/api/analyze` endpoint that:
-- Accepts image uploads via FormData
-- Converts images to base64
-- Sends to LLaVA model via Ollama
-- Returns HOT or NOT verdict with description
-
-## Deployment
-
-### Local Production Build
-
-```bash
-npm run build
-npm run start
-```
-
-### NixOS Deployment
-
-1. **Add the NixOS module to your configuration:**
-   ```nix
-   { config, lib, pkgs, ... }:
-   
-   {
-     imports = [
-       ./template-app-VISION-TRACK-hot-or-not/nix/nixos-module.nix
-     ];
-   
-     services.template-app-vision-track-hot-or-not = {
-       enable = true;
-       port = 3000;
-       host = "0.0.0.0";
-     };
-   }
-   ```
-
-2. **Rebuild your NixOS system:**
-   ```bash
-   sudo nixos-rebuild switch
-   ```
-
-## Technologies Used
-
-- **Frontend:** Next.js 15, React, TypeScript, Tailwind CSS
-- **AI:** Ollama with LLaVA model
-- **Image Processing:** Base64 encoding
-- **Deployment:** Nix, NixOS modules, standalone Next.js
+- **AI Chat**: visit `/chat`, enter your question, get AI response.  
+- **Image Analysis**: visit `/screen-analysis`, upload an image or capture screen (HTTPS).  
+- **Dashboard**: visit `/dashboard` to view mock analytics.  
+- **Projects**: visit `/projects` for UI demo (no persistence).  
 
 ## Project Structure
 
 ```
-template-app-VISION-TRACK-hot-or-not/
-├── src/
-│   └── app/
-│       ├── api/
-│       │   └── analyze/
-│       │       └── route.ts    # Image analysis API
-│       └── page.tsx            # Main UI
-├── nix/
-│   ├── package.nix             # Nix package definition
-│   └── nixos-module.nix        # NixOS service module
-├── flake.nix                   # Nix flake configuration
-├── next.config.ts              # Next.js configuration
-└── README.md                   # This file
+codehub/
+├── app/
+│   ├── api/
+│   │   ├── analyze/route.ts
+│   │   ├── ollama/chat/route.ts
+│   │   └── ocr/route.ts
+│   ├── chat/page.tsx
+│   ├── dashboard/page.tsx
+│   ├── history/page.tsx
+│   ├── projects/page.tsx
+│   ├── screen-analysis/page.tsx
+│   └── page.tsx
+├── components/
+├── lib/
+├── hooks/
+├── public/
+└── styles/
 ```
 
-## Troubleshooting
+## API Endpoints
 
-### Common Issues
+- POST `/api/analyze`  
+- POST `/api/ollama/chat`  
+- POST `/api/ocr`  
 
-1. **"MODEL not set" error:**
-   - Make sure Ollama is running: `ollama serve`
-   - Ensure LLaVA model is installed: `ollama list`
+## Models
 
-2. **Image analysis fails:**
-   - Check that LLaVA model is downloaded: `ollama pull llava:latest`
-   - Verify image format is supported (PNG, JPG, GIF)
+- `codellama:7b` (3.8 GB) – code analysis  
+- `llama3.2:3b` (2.0 GB) – general text analysis  
 
-3. **Nix build fails:**
-   - Ensure you have Nix installed and flakes enabled
-   - Try: `nix flake update`
+## Limitations & Future Work
 
-### Development Commands
+- Screen capture only works via HTTPS (ngrok).  
+- Project sharing UI is demo only; requires database for real sharing.  
+- History stored locally; cross-device sync needs backend.  
+- No user authentication.  
+
+Future: add database, auth, real collaboration, mobile app.
+
+## Development Commands
 
 ```bash
-# Development
+npm run dev
+npm run build
+npm run start
+npm run lint
+npm run typecheck
+ollama list
+```
+
+## License
+
+MIT License  
+
+**Enjoy building with CodeHub!**
+
+## Developer Quick Start Guide
+
+To get started as a developer on CodeHub, add this section to your `README.md`:
+
+```markdown
+## Developer Quick Start Guide
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/codehub.git && cd codehub
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install --legacy-peer-deps
+   ```
+
+3. **Pull the required Ollama models**
+   ```bash
+   ollama pull codellama:7b
+   ollama pull llama3.2:3b
+   ```
+
+4. **Start the Ollama server** (must be running before the app)
+   ```bash
+   ollama serve
+   ```
+
+5. **Start the Next.js development server**
+   ```bash
+   npm run dev
+   ```
+
+6. *(Optional)* **Expose HTTPS for screen capture**
+   ```bash
+   npm install -g ngrok
+   ngrok http 3000
+   ```
+   Copy the HTTPS URL from ngrok and open it in your browser.
+
+7. **Open your browser** at:
+   - Local: `http://localhost:3000`
+   - ngrok HTTPS URL (for screen capture)
+
+### Common Scripts
+```
+# Start development server
 npm run dev
 
 # Build for production
 npm run build
 
-# Start production server
+# Start production build
 npm run start
 
-# Type checking
-npm run typecheck
-
-# Linting
+# Run ESLint
 npm run lint
+
+# Run TypeScript checks
+npm run typecheck
+```
 ```
 
----
-
-**Enjoy analyzing images! 🔥**
+Paste this block into your `README.md` under a suitable heading.

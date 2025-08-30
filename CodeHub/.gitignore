@@ -39,15 +39,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-
-# ignore everything inside public by default
-public/*
-
-
-# ignore everything inside public by default
-public/*
-
-# BUT keep images folder
-!public/images/
-!public/images/**
