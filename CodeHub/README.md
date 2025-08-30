@@ -1,6 +1,6 @@
 # CodeHub
 <hr>
-# 🔥 John's HOT or NOT App 🔥
+<hr>
 
 A fun Next.js app that uses Ollama with LLaVA to analyze images and tell you if they're HOT or NOT! Built to be deployable both locally and on NixOS infrastructure.
 
