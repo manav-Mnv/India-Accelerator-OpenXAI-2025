@@ -3,11 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "next build",
-    "dev": "next dev",
-    "lint": "next lint",
-    "start": "next start"
-  },
+  "dev": "next dev",
+  "ngrok": "ngrok http 3000",
+  "dev:all": "concurrently \"npm run dev\" \"npm run ngrok\"",
+  "build": "next build",
+  "start": "next start",
+  "lint": "next lint",
+  "typecheck": "npm run typecheck"
+},
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-accordion": "1.2.2",

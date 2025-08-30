@@ -63,7 +63,7 @@ Copy the HTTPS URL from ngrok and use it to access screen analysis.
 - **Image Analysis**: visit `/screen-analysis`, upload an image or capture screen (HTTPS).  
 - **Dashboard**: visit `/dashboard` to view mock analytics.  
 - **Projects**: visit `/projects` for UI demo (no persistence).  
-
+- **Image Capture**:  visit /screen-analysis and use the Capture button or upload images for analysis.
 ## Project Structure
 
 ```

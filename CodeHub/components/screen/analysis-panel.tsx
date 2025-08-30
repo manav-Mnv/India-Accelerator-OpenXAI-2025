@@ -302,7 +302,6 @@ export function AnalysisPanel() {
     } finally {
       setImageAnalyzing(false)
       setImageProgress(0)
-      // reset file input so re-uploading same file works
       if (fileRef.current) fileRef.current.value = ""
     }
   }
@@ -326,6 +325,7 @@ export function AnalysisPanel() {
 
   return (
     <div className="grid gap-6 md:grid-cols-2">
+      {/* Live Screen Stream */}
       <Card>
         <CardHeader>
           <CardTitle>Live Screen Stream</CardTitle>
@@ -400,6 +400,7 @@ export function AnalysisPanel() {
         </CardContent>
       </Card>
 
+      {/* Screen Capture (Single) */}
       <Card>
         <CardHeader>
           <CardTitle>Screen Capture (Single)</CardTitle>
@@ -447,41 +448,7 @@ export function AnalysisPanel() {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Text Analysis</CardTitle>
-        </CardHeader>
-        <CardContent className="grid gap-3">
-          <Textarea
-            placeholder="Paste your code, error message, or any text to analyze..."
-            value={textInput}
-            onChange={(e) => setTextInput(e.target.value)}
-            rows={4}
-          />
-          <Button 
-            onClick={analyzeText}
-            disabled={!textInput.trim() || textAnalyzing}
-            className="bg-green-500 hover:bg-green-600"
-          >
-            Analyze Text
-          </Button>
-          
-          {textAnalyzing && (
-            <div className="grid gap-2">
-              <div className="flex items-center justify-between text-sm">
-                <span>Status</span>
-                <Badge variant="default">analyzing</Badge>
-              </div>
-              <Progress value={textProgress} aria-label="Text analysis progress" />
-            </div>
-          )}
-          
-          <div className="rounded-md border p-3 text-sm text-muted-foreground">
-            Uses Ollama models: llama3.2:3b for general text, codellama:7b for code analysis.
-          </div>
-        </CardContent>
-      </Card>
-
+      {/* Image Capture */}
       <Card>
         <CardHeader>
           <CardTitle>Image Capture</CardTitle>
